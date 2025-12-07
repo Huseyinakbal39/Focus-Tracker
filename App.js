@@ -15,25 +15,32 @@ export default function App()
             <Tab.Navigator
                 screenOptions={({ route }) => ({
           tabBarIcon: ({ focused, color, size }) => {
-            
+
+            // ikon belirleme
             let iconName;
 
             if (route.name === 'Home') {
-              iconName = focused ? 'timer' : 'timer-outline'; // Timer ikon
+              iconName = focused ? 'timer' : 'timer-outline'; // Home ikonu
             } 
             else if (route.name === 'Reports') {
-              iconName = focused ? 'stats-chart' : 'stats-chart-outline'; // Graf ikon
+              iconName = focused ? 'stats-chart' : 'stats-chart-outline'; // Raporlar ikonu
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
           },
 
-          tabBarActiveTintColor: '#007AFF',
+          // ikon renkleri
+          tabBarActiveTintColor: '#007AFF', 
           tabBarInactiveTintColor: 'gray',
+
+          // tab bar style
           tabBarStyle: {
-            paddingBottom: 4,
             height: 60,
-          }
+            paddingBottom: 6,
+            paddingTop: 6,
+          },
+
+          headerShown: false,
         })}
             >
                 <Tab.Screen 
