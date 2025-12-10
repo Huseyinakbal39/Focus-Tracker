@@ -72,21 +72,27 @@ export default function HomeScreen()
 
                 {/* Buttons */}
                 <View style={styles.buttonRow}>
-                    <TouchableOpacity
-                        style={[styles.button,styles.startButton]}
-                        onPress={handleStart}
+                    {
+                        isRunning ? (
+                            <TouchableOpacity
+                                style={[styles.button,styles.pauseButton]}
+                                onPress={handlePause}
                         
-                    >
-                        <Text style={styles.startButtonText}>Başlat</Text>
-                    </TouchableOpacity>
+                            >
+                                <Text style={styles.pauseButtonText}>Durdur</Text>
+                            </TouchableOpacity>
 
-                    <TouchableOpacity
-                        style={[styles.button,styles.pauseButton]}
-                        onPress={handlePause}
+                        ) : (
+                            <TouchableOpacity
+                                style={[styles.button,styles.startButton]}
+                                onPress={handleStart}
                         
-                    >
-                        <Text style={styles.pauseButtonText}>Durdur</Text>
-                    </TouchableOpacity>
+                            >
+                            <Text style={styles.startButtonText}>Başlat</Text>
+                            </TouchableOpacity>
+                        )
+                    }
+                    
 
                     <TouchableOpacity
                         style={[styles.button,styles.resetButton]}
