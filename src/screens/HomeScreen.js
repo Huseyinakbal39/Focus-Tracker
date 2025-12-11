@@ -1,7 +1,8 @@
 import { Picker } from '@react-native-picker/picker';
-import { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { useEffect, useRef, useState } from 'react';
+import { Alert, AppState, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { addSession } from '../storage/sessionStorage';
 
 const DEFAULT_MINUTES = 25;
 export default function HomeScreen()
@@ -11,6 +12,10 @@ export default function HomeScreen()
     const [durationMinutes , setDurationMinutes] = useState(DEFAULT_MINUTES);
     const [secondsLeft, setSecondsLeft] = useState(DEFAULT_MINUTES*60);
     const [distractionCount, setDistractionCount] = useState(0);
+    const [lastSummary, setLastSummary] = useState(null);
+
+    const intervalRef = useRef(null);
+    const appState = useRef(AppState.currentState);
 
     const handleStart = () => {
         if(secondsLeft === 0){
@@ -35,6 +40,87 @@ export default function HomeScreen()
         const s = (totalSeconds & 60).toString().padStart(2,'0');
         return `${m}:${s}`;
     };
+
+
+    useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        setSecondsLeft((prev) => {
+          if (prev <= 1) {
+            clearInterval(intervalRef.current);
+            setIsRunning(false);
+            handleSessionEnd(prev);
+            return 0;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [isRunning]);
+
+    // AppState ile dikkat dağınıklığı takibi
+  useEffect(() => {
+    const subscription = AppState.addEventListener('change', (nextAppState) => {
+      if (
+        appState.current.match(/active/) &&
+        nextAppState.match(/background|inactive/) &&
+        isRunning
+      ) {
+        // Odaklanma sırasında arka plana geçti → dikkat dağınıklığı
+        setDistractionCount((prev) => prev + 1);
+        setIsRunning(false);
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+        }
+        Alert.alert(
+          'Dikkat Dağınıklığı',
+          'Uygulamadan çıktığın için sayaç duraklatıldı.'
+        );
+      }
+      appState.current = nextAppState;
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, [isRunning]);
+
+  const handleSessionEnd = async (remainingSeconds) => {
+    const totalPlanned = durationMinutes * 60;
+    const actualSeconds = totalPlanned - remainingSeconds;
+    const actualMinutes = Math.max(1, Math.round(actualSeconds / 60));
+
+    const summary = {
+      durationMinutes: actualMinutes,
+      category: selectedCategory,
+      distractions: distractionCount,
+      date: new Date().toISOString(),
+    };
+
+    setLastSummary(summary);
+
+    await addSession({
+      id: Date.now().toString(),
+      date: summary.date,
+      durationMinutes: summary.durationMinutes,
+      category: summary.category,
+      distractions: summary.distractions,
+    });
+
+    Alert.alert(
+      'Seans Tamamlandı',
+      `Kategori: ${summary.category}\nSüre: ${summary.durationMinutes} dk\nDikkat Dağınıklığı: ${summary.distractions}`
+    );
+
+    setDistractionCount(0);
+    setSecondsLeft(durationMinutes * 60);
+  };
 
 
     return(
