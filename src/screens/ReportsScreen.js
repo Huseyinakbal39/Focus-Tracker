@@ -1,23 +1,75 @@
 import { StyleSheet, Text, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 export default function ReportsScreen() {
   return (
-    <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <Text style={styles.title}>Raporlar</Text>
-        <Text style={styles.subtitle}>
-          Odaklanma istatistiklerin burada görünecek. 📊
-        </Text>
+    <ScrollView style={styles.container}>
+      <Text style={styles.title}>Raporlar</Text>
 
-        <View style={styles.placeholderCard}>
-          <Text style={styles.placeholderTitle}>Henüz veri yok</Text>
-          <Text style={styles.placeholderText}>
-            Ana ekrandan bir odaklanma seansı başlat, tamamlandığında burada
-            grafikler ve istatistikler oluşmaya başlayacak.
-          </Text>
+      {/* Genel İstatistikler */}
+      <View style={styles.statsRow}>
+        <View style={styles.statCard}>
+          <Text style={styles.statLabel}>Bugün Toplam</Text>
+          <Text style={styles.statValue}>{todayTotal} dk</Text>
+        </View>
+        <View style={styles.statCard}>
+          <Text style={styles.statLabel}>Tüm Zamanlar</Text>
+          <Text style={styles.statValue}>{allTimeTotal} dk</Text>
         </View>
       </View>
-    </SafeAreaView>
+
+      <View style={styles.statsRow}>
+        <View style={[styles.statCard, { flex: 1 }]}>
+          <Text style={styles.statLabel}>Toplam Dikkat Dağınıklığı</Text>
+          <Text style={styles.statValue}>{totalDistractions}</Text>
+        </View>
+      </View>
+
+      {/* Son 7 Gün Bar Chart */}
+      <Text style={styles.chartTitle}>Son 7 Gün Odaklanma Süresi (dk)</Text>
+      <BarChart
+        data={{
+          labels: last7DaysData.labels,
+          datasets: [{ data: last7DaysData.data }],
+        }}
+        width={screenWidth - 32}
+        height={220}
+        fromZero
+        chartConfig={{
+          backgroundGradientFrom: '#ffffff',
+          backgroundGradientTo: '#ffffff',
+          decimalPlaces: 0,
+          color: (opacity = 1) => `rgba(0, 122, 255, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+          propsForBackgroundLines: {
+            strokeDasharray: '', // düz çizgi
+          },
+        }}
+        style={styles.chart}
+      />
+
+      {/* Kategoriye Göre Pie Chart */}
+      <Text style={styles.chartTitle}>Kategorilere Göre Dağılım</Text>
+      {categoryData.length > 0 ? (
+        <PieChart
+          data={categoryData.map((c) => ({
+            name: c.name,
+            population: c.minutes,
+            color: c.color,
+            legendFontColor: c.legendFontColor,
+            legendFontSize: c.legendFontSize,
+          }))}
+          width={screenWidth - 32}
+          height={220}
+          accessor="population"
+          backgroundColor="transparent"
+          paddingLeft="15"
+          absolute
+        />
+      ) : (
+        <Text style={styles.noDataText}>
+          Henüz kategori verisi yok. Önce birkaç seans başlat 🙂
+        </Text>
+      )}
+    </ScrollView>
   );
 }
 
