@@ -291,5 +291,34 @@ const styles = StyleSheet.create({
         color: '#333',
         fontWeight: '500',
     },
+    infoLabel: {
+    fontSize: 12,
+    color: '#777',
+  },
+  infoValue: {
+    marginTop: 4,
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  summaryCard: {
+    marginTop: 16,
+    backgroundColor: '#ffffff',
+    borderRadius: 14,
+    padding: 14,
+    shadowColor: '#000',
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 1,
+  },
+  summaryTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  summaryText: {
+    fontSize: 14,
+    marginTop: 2,
+  },
     
 });
