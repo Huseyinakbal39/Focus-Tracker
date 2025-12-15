@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
+{/*import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = '@focus_sessions';
 
@@ -31,4 +31,4 @@ export async function clearAllSessions() {
   } catch (e) {
     console.error('Seanslar silinirken hata:', e);
   }
-}
+}*/}
