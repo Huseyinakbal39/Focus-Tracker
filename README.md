@@ -1,50 +1,93 @@
-# Welcome to your Expo app 👋
+# 📱 Focus Tracker – Dijital Dikkat Takip Uygulaması
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Focus Tracker, dijital dikkat dağınıklığıyla mücadele etmek amacıyla geliştirilmiş
+bir mobil odaklanma ve dikkat takip uygulamasıdır. Uygulama, kullanıcının kendi
+başlattığı odaklanma seanslarını takip eder, dikkat dağınıklıklarını tespit eder
+ve elde edilen verileri istatistikler ile grafikler aracılığıyla kullanıcıya sunar.
 
-## Get started
+Bu proje, React Native ve Expo platformu kullanılarak geliştirilmiş olup,
+akademik bir proje kapsamında minimum gereksinimleri karşılayacak şekilde
+tasarlanmıştır.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## 🎯 Projenin Amacı
 
-2. Start the app
+Bu projenin amacı, kullanıcıların odaklanma alışkanlıklarını takip edebilecekleri,
+dikkat dağınıklığına sebep olan durumları somut verilerle analiz edebilecekleri
+bir mobil uygulama geliştirmektir. Uygulama sayesinde kullanıcılar, odaklanma
+sürelerini ölçebilir, hangi aktivitelerde daha verimli olduklarını
+gözlemleyebilir ve dikkatlerini dağıtan faktörlerin farkına varabilirler.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 🧩 Uygulama Özellikleri
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- ⏱ Ayarlanabilir odaklanma süresi (Pomodoro mantığı – varsayılan 25 dk)
+- ▶️ Başlat / ⏸ Durdur / 🔄 Sıfırla butonları
+- 📂 Seans öncesi kategori seçimi
+- 🚨 Uygulamadan çıkıldığında otomatik dikkat dağınıklığı tespiti
+- 📝 Seans bitiminde seans özeti (süre, kategori, dikkat dağınıklığı)
+- 💾 SQLite ile kalıcı veri saklama
+- 📊 Son 7 güne ait odaklanma süreleri (Bar Chart)
+- 🥧 Kategorilere göre odaklanma dağılımı (Pie Chart)
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 🖥️ Ekranlar
 
-When you're ready, run:
+### 1. Ana Sayfa (Zamanlayıcı)
+- Odaklanma seansı başlatma ve durdurma
+- Süre artırma ve azaltma
+- Kategori seçimi
+- Seans tamamlandığında özet bilgilerin gösterilmesi
 
+### 2. Raporlar (Dashboard)
+- Günlük toplam odaklanma süresi
+- Tüm zamanlara ait toplam odaklanma süresi
+- Toplam dikkat dağınıklığı sayısı
+- Son 7 gün odaklanma grafiği
+- Kategori bazlı odaklanma dağılımı grafiği
+- Geçmiş seansların listelenmesi
+
+---
+
+## 🧱 Kullanılan Teknolojiler
+
+- **Expo** – React Native geliştirme ortamı  
+- **React Native** – Mobil uygulama geliştirme  
+- **React Navigation** – Alt menü (Tab Navigator)  
+- **Expo SQLite** – Yerel veritabanı  
+- **AppState API** – Dikkat dağınıklığı takibi  
+- **react-native-chart-kit** – Grafik ve veri görselleştirme  
+- **react-native-svg** – Grafik altyapısı  
+
+---
+
+## 🗄️ Veritabanı Yapısı
+
+Uygulama içerisinde SQLite veritabanı kullanılmaktadır. Her odaklanma seansı
+aşağıdaki bilgilerle kaydedilmektedir:
+
+- Seans başlangıç zamanı
+- Seans bitiş zamanı
+- Seans süresi (dakika)
+- Seans kategorisi
+- Dikkat dağınıklığı sayısı
+
+Bu yapı sayesinde geçmiş seanslar kalıcı olarak saklanmakta ve raporlanabilmektedir.
+
+---
+
+## 🚀 Kurulum ve Çalıştırma
+
+### 1. Repository klonlama
 ```bash
-npm run reset-project
-```
+git clone https://github.com/kullanici-adi/focus-tracker.git
+cd focus-tracker
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### 2. Bağımlılıkları yükleme
+npm install
 
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### 3. Uygulamayı çalıştırma
+npx expo start 
